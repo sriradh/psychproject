@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, flash, url_for, jso
 from datetime import datetime
 import json
 
+# pychwelcomepage.html remove action as shown <form name="WelcomePageForm" method="POST" action="/friends">
+
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -15,15 +17,8 @@ categories = {"dummysession": "History"}
 sessions = {"sessions": ["dummyPysch"]}
 
 
-@app.route('/friends', methods=['GET','POST'])
-@app.route('/', methods=['GET' 'POST'])
+@app.route('/friends', methods=['GET'])
 def friends():
-
-        # return '''<form method="POST">
-        #           Language: <input type="text" name="language"><br>
-        #           Framework: <input type="text" name="framework"><br>
-        #           <input type="submit" value="Submit"><br>
-        #       </form>'''
         # request.get.args can be used only when this page has parameters coming as ? in the url
         # use request.args.get("parameterkey")
 
@@ -31,9 +26,12 @@ def friends():
         # language = request.form.get('language')
 
         print("inside friends..")
-        playerName = request.form.get("playerName")
-        newOrExistingGame = request.form.get("newOrExistingRadio")
-        print(playerName)
+        data = request.data()
+        print(data)
+        doublequoteddata = '\"'.join(data.split("'"))
+        dictdata = json.dumps(doublequoteddata)
+        players = dictdata["players"]
+        print(players)
 
         # data = request.get_json()
         # players = data["players"]
@@ -48,7 +46,7 @@ def friends():
         # print(type(playersdict))
 
         # return "Hi!"
-        return render_template("friends.html", players=players, gameLeader=gameLeader, newOrExisting=newOrExistingGame, sessionId=sessionId, category=category, playerName=playerName)
+        return render_template("askpeopletojoinpage.html", players=players, gameLeader=gameLeader, newOrExisting=newOrExistingGame, sessionId=sessionId, category=category, playerName=playerName)
 
 
 @app.route('/psychwelcomepage', methods=['GET', 'POST'])
@@ -91,8 +89,8 @@ def psychwelcome():
 
         headers = {"Content-Type": "application/json"}
 
-        # return render_template("friends.html", players={"sessionPlayers": players[sessionName]}, gameLeader={"gameLeader": gameLeader[sessionName]}, newOrExisting={"newOrExistingGame": newOrExistingGame}, sessionId=sessionName, category=categories[sessionName], playerName=playerName)
-        return redirect(url_for('friends', data=data, headers=headers))
+        # return render_template("askpeopletojoinpage.html", players={"sessionPlayers": players[sessionName]}, gameLeader={"gameLeader": gameLeader[sessionName]}, newOrExisting={"newOrExistingGame": newOrExistingGame}, sessionId=sessionName, category=categories[sessionName], playerName=playerName)
+        # return redirect(url_for('friends', data=jsonify(data), headers=headers))
 
     return render_template("psychwelcomepage.html", validSessions=sessions)
 
