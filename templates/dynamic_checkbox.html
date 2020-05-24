@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Checkboxes</title>
+</head>
+<body>
+<form method="POST" action="/dynamiccheckbox">
+    {% for x in tobepopulatedlist %}
+    {{x}} <input type="checkbox" name="mydynamiccheckbox" value= '{{x}}'</input><br>
+    {% endfor %}
+
+    <input type="submit" value="Click Me!!">
+</form>
+</body>

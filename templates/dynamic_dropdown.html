@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Dropdown example!</title>
+</head>
+<body>
+<form method="POST" action="/dynamicdropdown">
+    <label for="persondropdown">Choose your favourite:</label>
+    <select id="persondropdown" name="person">
+        {% for x in tobepopulatedlist %}
+          <option value= '{{ x }}'>{{x}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="After selecting someone, click me!!">
+</form>
+</body>
+</html>

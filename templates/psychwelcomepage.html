@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Welcome to Psych!</title>
+{% endblock %}
+
+
+{% block body %}
+
+<body>
+ <form name="WelcomePageForm" method="POST" action="/friends">
+
+
+     <p> Welcome to Pysch !!! </p>
+     <label for="playerName">Enter your name:</label>
+     <input type="text" id='playerName' type="text" name="playerName" required>
+     <br>
+     <br>
+        New Game <input type="radio" id="newGameRadioId" name="newOrExistingRadio" value="new" onclick="javascript:showOrHideSessionText();"> <br>
+        Existing Game <input checked type="radio" id="existingGameRadioId" name="newOrExistingRadio" value="existing" onclick="javascript:showOrHideSessionText();">
+     <br>
+     <br>
+
+     <div hidden id="labelanddropdown">
+     <label id="dropdownlabel" for="gamecategories">Select a Category</label>
+     <select style="font-size:15px;" id="gamecategories" name="gamecategories">
+      <option value="Indian History">Indian History</option>
+      <option value="Physics">Physics</option>
+      <option value="Chemistry">Chemistry</option>
+      <option value="Geography">Geography</option>
+     </select>
+     </div>
+
+    <script>
+    function showOrHideSessionText() {
+      var existingGameChecked = document.getElementById("existingGameRadioId").checked;
+      var t = document.getElementById("sessionGametoJoinField");
+      if (existingGameChecked)
+      {
+         t.disabled=false;
+         document.getElementById("labelanddropdown").style.display = "none";
+
+      }
+      else
+      {
+         t.disabled=true;
+         document.getElementById("labelanddropdown").style.display = "block";
+      }
+    }
+    </script>
+
+     <br>
+     <br>
+
+    <label id="sessionGametoJoinFieldLabel"  for="sessionGametoJoinField">Enter the session where you want to join:</label>
+    <input  id='sessionGametoJoinField' type="text" name="sessionGametoJoinField"> <br> <br>
+    <input  type="button" value="Continue" style = "font-size:20px" onclick="checkifeverythingisalright()">
+
+    <script>
+    function checkifeverythingisalright() {
+      var existingGameChecked = document.getElementById("existingGameRadioId").checked;
+      var t = document.getElementById("sessionGametoJoinField");
+      var playerName = document.getElementById("playerName");
+      var validPsychSessions = {{ validSessions | tojson }}
+      var validPsychSessionsList = validPsychSessions.sessions;
+
+      if (playerName.value == '')
+      {
+         alert("Enter your name and for existing sessions, enter session information to continue..");
+         document.getElementById("playerName").focus();
+         return false;
+      }
+
+      if (existingGameChecked && t.value == '')
+      {
+         alert("Enter a valid session number");
+         document.getElementById("sessionGametoJoinField").focus();
+         return false;
+      }
+
+      if (existingGameChecked && t.value != '')
+      {
+          if (validPsychSessionsList.includes(t.value))
+          {
+             null;
+          }
+          else
+          {
+             alert("This is not a valid session number. Please re-enter!")
+             document.getElementById("sessionGametoJoinField").focus();
+             return false;
+          }
+      }
+
+       WelcomePageForm.submit();
+     }
+
+    </script>
+
+
+ </form>
+</body>
+{% endblock %}
+

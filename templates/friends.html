@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" http-equiv="refresh" content="15" >
+    <!--<title>Welcome to Psych!</title>-->
+    <!-- meta charset="UTF-8" -->
+    <title>Welcome to Psych!</title>
+</head>
+<body onpageshow="showhidedivfunction()">
+ <form  method="POST" action="/askpeopletojoinpage" >
+
+      <div id="newdiv">
+      <p> Great {{playerName}}! You have chosen to play Psych and the category you have chosen is: <b>{{category}}</b>.
+          Please ask your friends to enter the following session id to play with you : <b>{{sessionId}}</b></p>
+      <p>Press "Start the Game" once everyone is in!</p>
+      <br>
+      <br>
+      <input  type="submit" value="Start the Game!" style = "font-size:20px">
+      </div>
+
+      <div id="existingdiv">
+      <p> Great {{playerName}}! We will start the game as soon as the game leader {{gameLeader.get("gameLeader")}} starts.
+          In the meantime, please ask your friends to enter the following session id to play with you : <b>{{sessionId}}</b></p>
+      <br>
+      <br>
+      <br>
+
+      </div>
+
+    <div class="players">
+    <h1 style="text-align: center">Players in this game</h1>
+    <table>
+        <tr>
+            <th>Player</th>
+        </tr>
+        {% for player in players["sessionPlayers"] %}
+            <tr>
+                <td>{{ player }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+   <script>
+     function showhidedivfunction() {
+      var newOrExistingGame = {{ newOrExisting | tojson }}
+      var newOrExisting = newOrExistingGame["newOrExistingGame"]
+      alert("hi there " + newOrExisting);
+      if (newOrExisting == "existing")
+      {
+       document.getElementById("existingdiv").style.visibility = "visible"
+       document.getElementById("newdiv").style.visibility = "hidden"
+      }
+      else
+      {
+       document.getElementById("existingdiv").style.visibility = "hidden"
+       document.getElementById("newdiv").style.visibility = "visible"
+      }
+
+     }
+  </script>
+ </form>
+</body>
+</html>

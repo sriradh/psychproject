@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Checkboxes using Dict</title>
+</head>
+<body>
+<form method="POST" action="/dynamiccheckboxusingdict">
+    {% for key, v in valuestobepopulated.items() %}
+    {{v}} <input type="checkbox" name="mydynamiccheckboxusingdict" value='{{key}}'</input><br>
+    {% endfor %}
+
+    <input type="submit" value="Dynamic Dict Click Me!!">
+</form>
+</body>
